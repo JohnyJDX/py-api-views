@@ -28,7 +28,7 @@ class GenreList(APIView):
     def get(self, request):
         genre = Genre.objects.all()
         serializer = GenreSerializer(genre, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data)
 
     def post(self, request):
         serializer = GenreSerializer(data=request.data)
@@ -45,7 +45,7 @@ class GenreDetail(APIView):
     def get(self, request, pk):
         genre = self.get_object(pk)
         serializer = GenreSerializer(genre)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data)
 
     def put(self, request, pk):
         genre = self.get_object(pk)
@@ -60,7 +60,7 @@ class GenreDetail(APIView):
         serializer = GenreSerializer(genre, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data)
 
     def delete(self, request, pk):
         genre = self.get_object(pk)
@@ -69,7 +69,9 @@ class GenreDetail(APIView):
 
 
 class ActorList(
-    generics.ListCreateAPIView, mixins.ListModelMixin, mixins.CreateModelMixin
+    generics.ListCreateAPIView,
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin
 ):
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
